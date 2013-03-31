@@ -117,5 +117,6 @@ elsif cmd == 'test'
   else
     run_this = File.join(spec_dir, "integration_spec.rb")
   end
-  RSpec::Core::Runner::run([run_this], STDERR, STDOUT)
+  result = RSpec::Core::Runner::run([run_this], STDERR, STDOUT)
+  exit result.to_i
 end

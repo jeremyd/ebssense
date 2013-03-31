@@ -13,16 +13,19 @@ module Ebssense
 
     def run
       sets = @backupmeta.snapsets.all(:order => [:started_at.desc])
-      info "Found #{sets.size} total snapshot sets.  Keeping the latest #{options[:keep]} sets."
-      keep_these = sets.shift(options[:keep])
-      unless keep_these < options[:keep]
+      info "Found #{sets.size} total snapshot sets.  Keeping the latest #{@options[:keep]} sets."
+      keep_these = sets.shift(@options[:keep])
+      if keep_these.size < @options[:keep]
+        info "There aren't enough snapshots to cleanup any."
+      else
         info "Found #{sets.size} extra snapshot sets to cleanup."
         sets.each do |expired|
           expired.snapshots.each do |snap|
             info "Cleaning snapshot: #{snap.id}"
             @ec2.snapshots[snap.id].delete
+            snap.destroy!
           end
-          expired.destroy
+          expired.destroy!
         end
       end
     end

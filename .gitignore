@@ -4,3 +4,4 @@ bundle
 *.swo
 *.db
 *.swn
+.gitreview

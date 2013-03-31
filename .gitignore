@@ -1,0 +1,6 @@
+bundle
+.bundle
+*.swp
+*.swo
+*.db
+*.swn

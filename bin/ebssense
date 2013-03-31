@@ -1,0 +1,15 @@
+#!/usr/bin/ruby
+
+# development vendor
+vendorlib = File.expand_path(File.join(File.dirname(File.realpath(__FILE__)), "..", "bundle", "bundler", "setup.rb"))
+
+puts "using vendorlib: #{vendorlib}"
+if File.exists?(vendorlib)
+  require vendorlib
+else
+  puts "FATAL: you must run bundle install --standalone; or could not find the vendor directory #{vendorlib}"
+  exit 1
+end
+
+require 'ebssense'
+require 'ebssense/command'

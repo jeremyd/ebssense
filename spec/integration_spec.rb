@@ -68,13 +68,13 @@ describe "Ebssense::Build" do
       cleanup = Ebssense::Clean.new(options)
       cleanup.run
 
+      # Specified keep=2
       backupmeta.snapsets.size.should == 2
 
       #expect {
       #}.to change(Backupmeta.first(:name => options[:name]).snapsets, :size).by_at_least(1)
 
-      #backupmeta.snapsets.size.should be_at_least(options[:keep])
-      #lastest_snapset.should be(backupmeta.snapsets.first(:order => [ :started_at.desc ]))
+      latest_snapset.should == backupmeta.snapsets.first(:order => [ :started_at.desc ])
 
     end
 

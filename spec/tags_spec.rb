@@ -19,14 +19,16 @@ end
 describe "Ebssense::TagSync" do
   context "as a mixin" do
     it "syncs the sqlite.db with the tags" do
+      @tag = ENV['EBSSENSE_TESTING_NAME']
+      @tag ||= "tagtimetestingebssense123"
       tsp = TagSpecHelper.new
-      tsp.sync_from_tags("tagtime")
-      Backupmeta.first(:name => "tagtime").should be
-      Backupmeta.first(:name => "tagtime").size_vol.should be
-      Backupmeta.first(:name => "tagtime").volsets.first.device_letters.first.should be
-      Backupmeta.first(:name => "tagtime").volsets.first.should be
-      Backupmeta.first(:name => "tagtime").snapsets.first.should be
-      Backupmeta.first(:name => "tagtime").snapsets.first.device_letters.first.should be
+      tsp.sync_from_tags(@tag)
+      Backupmeta.first(:name => @tag).should be
+      Backupmeta.first(:name => @tag).size_vol.should be
+      Backupmeta.first(:name => @tag).volsets.first.device_letters.first.should be
+      Backupmeta.first(:name => @tag).volsets.first.should be
+      Backupmeta.first(:name => @tag).snapsets.first.should be
+      Backupmeta.first(:name => @tag).snapsets.first.device_letters.first.should be
     end
   end
 end

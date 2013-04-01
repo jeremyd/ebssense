@@ -31,6 +31,7 @@ cmd_opts = case cmd
   when "test"
     Trollop::options do
       opt :tags, "Run the tag sync test"
+      opt :integration, "Run the integration test"
       #no options yet, might pass in test to run.
     end
   when "backup"
@@ -113,10 +114,13 @@ elsif cmd == 'test'
   Ebssense::Startup.orm_init(Dir.pwd + "/ebssense-TESTING.db")
   spec_dir = File.expand_path(File.join(File.dirname(File.realpath(__FILE__)), "..", "..", "spec"))
   if cmd_opts[:tags]
-    run_this = File.join(spec_dir, "tags_spec.rb")
+    run_this = [File.join(spec_dir, "tags_spec.rb")]
+  elsif cmd_opts[:integration]
+    run_this = [File.join(spec_dir, "integration_spec.rb")]
   else
-    run_this = File.join(spec_dir, "integration_spec.rb")
+# TODO: this should be a file glob.  keep integration spec at the front though, tags_spec needs some tags populated and for now this does it.
+    run_this = [File.join(spec_dir, "integration_spec.rb"), File.join(spec_dir, "tags_spec.rb")]
   end
-  result = RSpec::Core::Runner::run([run_this], STDERR, STDOUT)
+  result = RSpec::Core::Runner::run(run_this, STDERR, STDOUT)
   exit result.to_i
 end

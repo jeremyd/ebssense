@@ -32,12 +32,12 @@ module Ebssense
     # TODO: possibly more confirmation than just that they have a Name tag?
       taglist = []
       @ec2.snapshots.tagged("Name").each do |snap|
-        taglist << snap.tags["Name"]
+        taglist << snap.tags.to_h["Name"]
       end
       @ec2.volumes.tagged("Name").each do |vol|
-        taglist << vol.tags["Name"]
+        taglist << vol.tags.to_h["Name"]
       end
-      taglist.sort.uniq
+      taglist.uniq
     end
 
 # TODO also get started_at for each *set

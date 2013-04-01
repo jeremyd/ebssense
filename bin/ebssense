@@ -2,10 +2,14 @@
 
 # development vendor
 vendorlib = File.expand_path(File.join(File.dirname(File.realpath(__FILE__)), "..", "bundle", "bundler", "setup.rb"))
+hardvendor = "/var/lib/clustersense/bundle/bundler/setup.rb"
 
-puts "using vendorlib: #{vendorlib}"
 if File.exists?(vendorlib)
+  puts "using vendorlib: #{vendorlib}"
   require vendorlib
+elsif File.exists?(hardvendor)
+  puts "using packaged vendorlib: #{hardvendor}"
+  require hardvendor
 else
   puts "FATAL: you must run bundle install --standalone; or could not find the vendor directory #{vendorlib}"
   exit 1

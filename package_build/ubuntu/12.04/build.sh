@@ -1,7 +1,7 @@
 #!/bin/bash -e
 # let's assume CWD is the code checkout
 EBSSENSE_VERSION=0.0.1
-DEBNAME=ebssense
+DEBNAME=ebssense-${EBSSENSE_VERSION}.deb
 BUILDROOT=tmp/build_root
 
 mkdir -p tmp/build_root
@@ -20,6 +20,4 @@ rsync -rv spec/ $BUILDROOT/var/lib/clustersense/spec/
 
 sudo gem install fpm --no-user --no-rdoc --no-ri
 
-#fpm --post-install `pwd`/post-install -s dir -t deb -n ebssense -v $EBSSENSE_VERSION -C $BUILD_ROOT -p $DEBNAME -d dependency -d dependency -d dependency -d dependency srv etc
-
-fpm -s dir -t deb -n ebssense -v $EBSSENSE_VERSION -C $BUILDROOT -p $DEBNAME -d lvm2 -d xfsprogs -d ruby1.9.1 -d libxml2 -d libxslt var
+fpm -s dir -t deb -n ebssense -v $EBSSENSE_VERSION -C $BUILDROOT -p $DEBNAME -d lvm2 -d xfsprogs -d ruby1.9.1 -d libxml2 -d libxslt1.1 var

@@ -3,7 +3,7 @@
 if [ -z "$BUILD_NUMBER" ]; then
   echo "whoops, we needed a jenkins variable \$BUILD_NUMBER or it'll just be blank!" 
   exit 1
-end
+fi
 EBSSENSE_VERSION=0.0.1-${BUILD_NUMBER}
 DEBNAME=ebssense_${EBSSENSE_VERSION}.deb
 BUILDROOT=tmp/build_root

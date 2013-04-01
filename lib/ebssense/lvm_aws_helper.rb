@@ -1,11 +1,16 @@
 module Ebssense
   module LvmAwsHelper
 
-    def init_helper
+    def init_helper(options)
       #info target.block_device_mappings.inspect
       @ec2 = AWS::EC2.new()
-      @log = Logger.new(STDOUT)
-      @log.level = Logger::INFO
+
+      logtarget = options[:logfile]
+      logtarget ||= $stdout
+      loglevel = :info
+      loglevel = :debug if options[:debug]
+      @log = Logger.new(logtarget, loglevel)
+
       unless ENV['AWS_SECRET_KEY'] && ENV['AWS_ACCESS_KEY']
         puts "You must set the environment variables AWS_SECRET_KEY and AWS_ACCESS_KEY."
         exit 1

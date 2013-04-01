@@ -18,8 +18,13 @@ ENV['AWS_SECRET_ACCESS_KEY'] = ENV['AWS_SECRET_KEY']
 module Ebssense
   class Startup
     # db_path == the sqlite db path
-    def self.orm_init(db_path, logger=$stdout)
-      DataMapper::Logger.new(logger, :info)
+    def self.orm_init(cmd_opts)
+      db_path = cmd_opts[:sqlite]
+      logtarget = cmd_opts[:logfile]
+      logtarget ||= $stdout
+      loglevel = :info
+      loglevel = :debug if cmd_opts[:debug]
+      DataMapper::Logger.new(logtarget, loglevel)
 
 # Load our ORM libs.
       dbfdir = File.expand_path(File.join(File.dirname(File.realpath(__FILE__)), "ebssense", "db"))

@@ -9,7 +9,7 @@ module Ebssense
 
     def initialize(opts)
       @options = opts
-      init_helper
+      init_helper(@options)
       @backupmeta = Backupmeta.first(:name => opts[:name])
     end
 

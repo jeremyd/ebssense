@@ -6,7 +6,7 @@ module Ebssense
 
     def initialize(opts)
       @options = opts
-      init_helper
+      init_helper(@options)
       
       @options[:device_letters].each do |device|
         raise "FATAL: /dev/sd#{device} is already attached." if target.block_device_mappings.keys.include?("/dev/sd#{device}")

@@ -8,8 +8,8 @@ module Ebssense
     include Ebssense::RunCmdHelper
     include Ebssense::LvmAwsHelper
 
-    def initialize
-      init_helper
+    def initialize()
+      init_helper({})
       self
     end
 

@@ -1,7 +1,15 @@
 SUB_COMMANDS = %w(build detach restore backup list clean db_migrate test)
 global_opts = Trollop::options do
-  opt :logfile, "Path to logfile to output logs.  Default log to STDOUT"
-  banner "available subcommands: #{SUB_COMMANDS.join(' ')}"
+  banner <<-EOS
+  Sub-command must be specified!
+  Available sub-commands: #{SUB_COMMANDS.join(' ')}\n
+  Example: ebssense build --help"
+  Global Options:
+  EOS
+
+  opt :logfile, "Path to logfile to output logs.  Default: log to STDOUT", :type => :string
+  opt :sqlite, "Path to sqlite database to use.  Default: PWD / ebssense.db", :type => :string, :default => File.join(Dir.pwd, "ebssense.db")
+  opt :debug, "loglevel: debug"
   stop_on SUB_COMMANDS
 end
 
@@ -63,21 +71,22 @@ cmd_opts = case cmd
 #puts "Subcommand: #{cmd.inspect}"
 #puts "Subcommand options: #{cmd_opts.inspect}"
 #puts "Remaining arguments: #{ARGV.inspect}"
+cmd_opts = cmd_opts.merge(global_opts)
 
 if cmd == "db_migrate"
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   if cmd_opts[:destructive]
     DataMapper.auto_migrate!
   else
     DataMapper.auto_upgrade!
   end
 elsif cmd == 'build'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   require 'ebssense/build'
   new_ebs = Ebssense::Build.new(cmd_opts)
   new_ebs.create_fresh_volumes_attach
 elsif cmd == 'list'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   require 'ebssense/list'
   if cmd_opts[:tags_given]
     Ebssense::List.display_tags
@@ -90,28 +99,28 @@ elsif cmd == 'list'
     Ebssense::List.display_all
   end
 elsif cmd == 'detach'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   require 'ebssense/detach'
   detach_cmd = Ebssense::Detach.new(cmd_opts)
   detach_cmd.detach_volumes(cmd_opts[:delete])
 elsif cmd == 'backup'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   require 'ebssense/backup'
   new_bak = Ebssense::Backup.new(cmd_opts)
   new_bak.run
 elsif cmd == 'restore'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   require 'ebssense/restore'
   new_restore = Ebssense::Restore.new(cmd_opts)
   new_restore.run
 elsif cmd == 'clean'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   require 'ebssense/clean'
   cleanup = Ebssense::Clean.new(cmd_opts)
   cleanup.run
 elsif cmd == 'test'
   require 'rspec'
-  Ebssense::Startup.orm_init(Dir.pwd + "/ebssense-TESTING.db")
+  Ebssense::Startup.orm_init(cmd_opts)
   spec_dir = File.expand_path(File.join(File.dirname(File.realpath(__FILE__)), "..", "..", "spec"))
   if cmd_opts[:tags]
     run_this = [File.join(spec_dir, "tags_spec.rb")]

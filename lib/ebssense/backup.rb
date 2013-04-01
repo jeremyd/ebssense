@@ -9,13 +9,7 @@ module Ebssense
 
     def initialize(opts)
       @options = opts
-      @ec2 = AWS::EC2.new()
-      @log = Logger.new(STDOUT)
-      @log.level = Logger::INFO
-      unless ENV['AWS_SECRET_KEY'] && ENV['AWS_ACCESS_KEY']
-        puts "You must set the environment variables AWS_SECRET_KEY and AWS_ACCESS_KEY."
-        exit 1
-      end
+      init_helper(@options)
       @backupmeta = Backupmeta.first(:name => opts[:name])
       @attached_volset = @backupmeta.volsets.first(:attached => true)
       unless @backupmeta && @attached_volset

@@ -48,7 +48,9 @@ module Ebssense
       run_cmd("mkdir -p #{lvm_snap_mount}")
       run_cmd("pvscan")
       run_cmd("lvchange -ay #{lvm_device_name}")
+      run_cmd("mkdir -p #{@backupmeta.mount_point}")
       run_cmd("mount -o noatime #{lvm_device_name} #{@backupmeta.mount_point}")
+      run_cmd("mkdir -p #{lvm_snap_mount}")
       run_cmd("mount -o nouuid #{lvm_snapshot_device} #{lvm_snap_mount}")
       run_cmd("mount -o remount,ro,nouuid #{lvm_snapshot_device} #{lvm_snap_mount}")
 

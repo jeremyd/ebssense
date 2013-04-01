@@ -1,4 +1,8 @@
+require 'fileutils'
+
 SUB_COMMANDS = %w(build detach restore backup list clean db_migrate test)
+HOME=File.join(File.expand_path(ENV['HOME']), ".ebssense")
+
 global_opts = Trollop::options do
   banner <<-EOS
   Sub-command must be specified!
@@ -8,9 +12,16 @@ global_opts = Trollop::options do
   EOS
 
   opt :logfile, "Path to logfile to output logs.  Default: log to STDOUT", :type => :string
-  opt :sqlite, "Path to sqlite database to use.  Default: PWD / ebssense.db", :type => :string, :default => File.join(Dir.pwd, "ebssense.db")
+  opt :sqlite, "Path to sqlite database to use.  Default: $HOME/ebssense.db", :type => :string, :default => File.join(HOME, "ebssense.db")
   opt :debug, "loglevel: debug"
   stop_on SUB_COMMANDS
+end
+
+unless global_opts[:sqlite_given] || ENV['HOME']
+  puts "FATAL: $HOME not set and --sqlite not given.  Unable to determine location of sqlite db."
+  exit 1
+else
+  FileUtils.mkdir_p(File.dirname(global_opts[:sqlite]))
 end
 
 cmd = ARGV.shift # get the subcommand

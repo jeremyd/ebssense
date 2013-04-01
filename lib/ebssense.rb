@@ -37,6 +37,8 @@ module Ebssense
       puts "using sqlite endpoint: #{sqlite}"
       DataMapper.setup(:default, sqlite)
 
+      DataMapper.auto_upgrade!
+
       DataMapper.finalize
     end
   end

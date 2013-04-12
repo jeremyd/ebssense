@@ -47,11 +47,11 @@ Local SQlite caching of tagged metadata makes operations very quick and not 100%
 
 Now you can run the tool directly from the checkout location's bin dir:
 
-    bin/ebssense --help
+    ebssense --help
 
 # Usage
 
-Ebssense has extensive descriptions of each options available by using the --help flag on any of the sub-commands.
+Ebssense has descriptions of each option when you specify --help on any of the sub-commands.
 
 ### Setup the standard environment variables for AWS Credentials
 
@@ -60,13 +60,32 @@ Ebssense has extensive descriptions of each options available by using the --hel
 
 ### Creating a fresh volume-stripe from scratch.
 
-    bin/ebssense build --help
+    ebssense build --help
+    Options:
+                --name, -n <s>:   Unique name to be used for all operations regarding this data set.
+             --num-vol, -u <i>:   Number of EBS volumes to stripe together with LVM.
+            --size-vol, -s <i>:   Size of *each EBS volume in Gigabytes
+         --mount-point, -m <s>:   Mount point where the LVM stripe will be mounted. (Default: /mnt/ebs)
+     --device-letters, -d <s+>:   Choose the device name suffix(s) for all volumes in the stripe.  Use one letter per volume separated by spaces.  Example --device-letters l m n o p --num-vol 5
+     --lvm-device-name, -l <s>:   LVM device name. (Default: lvol1)
+    --lvm-volume-group, -v <s>:   LVM volume group name. (Default: esense-vg-data)
 
 ### Backing up the volume stripe.
 
-    bin/ebssense backup --help
+    ebssense backup --help
+
+### Listing metadata.
+
+    ebssense list
+
+    ebssense list --name <id>
 
 ### Restoring the volume stripe from backup.
 
-    bin/ebssense list --sync <myName>
-    bin/ebssense restore --help
+Synchronize locally the metadata for the sets tagged with <id>.
+
+    ebssense list --sync --name <id> 
+
+Restore.
+
+    ebssense restore --name <id>

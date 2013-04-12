@@ -21,11 +21,8 @@ Local SQlite caching of tagged metadata makes operations very quick and not 100%
 #### Ubuntu 12.04 Package
 
     wget https://s3-us-west-1.amazonaws.com/ebssense/ebssense_0.0.1-20.deb
-
     dpkg -i ebssense_0.0.1-20.deb
-
     apt-get -f install
-
     ebssense build --help
 
 #### Debian Package (coming soon)
@@ -36,23 +33,16 @@ Local SQlite caching of tagged metadata makes operations very quick and not 100%
 ### Install the pre-requirements from system packages:
 
 - Ruby >= 1.9 with bundler >= 1.3
-
 - lvm2
-
 - xfsprogs
-
 - libxml2
-
 - libxslt
 
 ### Build
 
     git clone git://github.com/jeremyd/ebssense
-
     cd ebssense
-
     gem install bundler
-
     bundle install --standalone
 
 Now you can run the tool directly from the checkout location's bin dir:
@@ -66,7 +56,6 @@ Ebssense has extensive descriptions of each options available by using the --hel
 ### Setup the standard environment variables for AWS Credentials
 
     export AWS_SECRET_KEY=XXX
-
     export AWS_ACCESS_KEY=XXX
 
 ### Creating a fresh volume-stripe from scratch.
@@ -80,5 +69,4 @@ Ebssense has extensive descriptions of each options available by using the --hel
 ### Restoring the volume stripe from backup.
 
     bin/ebssense list --sync <myName>
-
     bin/ebssense restore --help

@@ -72,7 +72,11 @@ Ebssense has descriptions of each option when you specify --help on any of the s
 
 ### Backing up the volume stripe.
 
-    ebssense backup --help
+    ebssense backup --name <id>
+
+### Automatic expiration of old backups.
+
+    ebssense clean --name <id> --keep <backups to keep>
 
 ### Listing metadata.
 
@@ -82,9 +86,13 @@ Ebssense has descriptions of each option when you specify --help on any of the s
 
 ### Restoring the volume stripe from backup.
 
-Synchronize locally the metadata for the sets tagged with <id>.
+Optional: show all found tags in the account.
 
-    ebssense list --sync --name <id> 
+    ebssense list --tags
+
+Synchronize locally the metadata for the sets tagged with id.
+
+    ebssense list --sync <id> 
 
 Restore.
 

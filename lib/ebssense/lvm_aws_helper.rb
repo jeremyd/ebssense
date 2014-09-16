@@ -3,7 +3,7 @@ module Ebssense
 
     def init_helper(options)
       #info target.block_device_mappings.inspect
-      @ec2 = AWS::EC2.new()
+      @ec2 = AWS::EC2.new(:region => @options[:region])
 
       logtarget = options[:logfile]
       logtarget ||= $stdout
@@ -21,7 +21,8 @@ module Ebssense
     # Requires cloud-init on image.
     def target
       # This file is a link to a file who's filename is the instance id of this instance.
-      @instance_id ||= File.basename(File.readlink("/var/lib/cloud/instance"))
+      metadata_endpoint = 'http://169.254.169.254/latest/meta-data/'
+      @instance_id = Net::HTTP.get( URI.parse( metadata_endpoint + 'instance-id' ) )
       instance = @ec2.instances[@instance_id]
       raise "FATAL: the instance id we found doesn't exist" unless instance.exists?
       raise "FATAL: the instance we're on status isn't :running" unless instance.status == :running

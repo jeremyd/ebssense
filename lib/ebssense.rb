@@ -9,6 +9,8 @@ require 'ebssense/lvm_aws_helper.rb'
 require 'ebssense/run_cmd_helper.rb'
 require 'ebssense/tag_sync.rb'
 require 'logger'
+require 'rubygems'
+require 'net/http'
 
 # Stay compatible with ALL the aws style tools
 ENV['AWS_ACCESS_KEY_ID'] = ENV['AWS_ACCESS_KEY']

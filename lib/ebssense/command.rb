@@ -36,12 +36,14 @@ cmd_opts = case cmd
       opt :device_letters, "Choose the device name suffix(s) for all volumes in the stripe.  Use one letter per volume separated by spaces.  Example --device-letters l m n o p --num-vol 5", :type => :strings, :required => true
       opt :lvm_device_name, "LVM device name.", :type => :string, :required => false, :default => "lvol1"
       opt :lvm_volume_group, "LVM volume group name.", :type => :string, :required => false, :default => "esense-vg-data"
+      opt :region, "AWS region code", :type => :string, :required => true, :default => "us-east-1"
     end
   when "detach"
     Trollop::options do
       opt :name, "Unique name to be used for all operations regarding this data set.", :type => :string, :required => true, :short => "-n"
       opt :device_letters, "Choose the device name suffix(s) for all volumes in the stripe.  Use one letter per volume separated by spaces.  Example --device-letters l m n o p --num-vol 5", :type => :strings, :required => false
       opt :delete, "Specify this to delete the volume after detachment."
+      opt :region, "AWS region code", :type => :string, :required => true, :default => "us-east-1"
     end
   when "db_migrate"
     Trollop::options do
@@ -58,21 +60,25 @@ cmd_opts = case cmd
       opt :name, "Unique name to be used for all operations regarding this data set.", :type => :string, :required => true, :short => "-n"
       opt :pre_hook, "Command to be run just prior to snapshot.", :type => :string
       opt :post_hook, "Command to run just after snapshot.", :type => :string
+      opt :region, "AWS region code", :type => :string, :required => true, :default => "us-east-1"
     end
   when "restore"
     Trollop::options do
       opt :name, "Unique name to be used for all operations regarding this data set.", :type => :string, :required => true, :short => "-n"
+      opt :region, "AWS region code", :type => :string, :required => true, :default => "us-east-1"
     end
   when "list"
     Trollop::options do
       opt :name, "List info about the backup set with the specified name.", :type => :string
       opt :sync, "Sync local database from AWS tags for the specified name.", :type => :string
       opt :tags, "Search for backup metadata in EC2 tags."
+      opt :region, "AWS region code", :type => :string, :required => true, :default => "us-east-1"
     end
   when "clean"
     Trollop::options do
       opt :name, "Target the specified backupset for cleanup operations.", :type => :string, :required => true
       opt :keep, "Number of Snapshot-sets (backups) to keep.", :type => :integer, :default => 10
+      opt :region, "AWS region code", :type => :string, :required => true, :default => "us-east-1"
     end
   else
     Trollop::die "unknown subcommand #{cmd.inspect}"

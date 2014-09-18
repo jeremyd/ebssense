@@ -69,6 +69,7 @@ Ebssense has descriptions of each option when you specify --help on any of the s
      --device-letters, -d <s+>:   Choose the device name suffix(s) for all volumes in the stripe.  Use one letter per volume separated by spaces.  Example --device-letters l m n o p --num-vol 5
      --lvm-device-name, -l <s>:   LVM device name. (Default: lvol1)
     --lvm-volume-group, -v <s>:   LVM volume group name. (Default: esense-vg-data)
+              --region, -r <s>:   Amazon EC2 region. (Default: us-east-1)
 
 ### Backing up the volume stripe.
 

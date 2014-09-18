@@ -28,6 +28,7 @@ module Ebssense
         new_vol = Volume.create(:id => img_vol.id, :device_letter => device)
         new_volset.volumes << new_vol
         new_volset.save
+        sleep 1 until img_vol.status == :available
         info "Attaching volume #{img_vol.id} to target.."
         attachment = img_vol.attach_to(target, "/dev/sd#{device}")
         attachments << attachment
